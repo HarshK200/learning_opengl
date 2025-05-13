@@ -11,7 +11,7 @@ int main() {
     std::cout << "Hello GLFW + OpenGL" << std::endl;
     std::cout << "\nGLFW VERSION DETAIL:\n" << glfwGetVersionString() << std::endl;
     GLFWwindow* window;
-    window = glfwCreateWindow(1280, 720, "Ballz", nullptr, nullptr);
+    window = glfwCreateWindow(800, 600, "Ballz", nullptr, nullptr);
 
     if(!window) {
         glfwTerminate();
