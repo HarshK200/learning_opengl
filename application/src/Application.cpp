@@ -1,6 +1,8 @@
-#include "GL/gl.h"
+// clang-format off
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include <iostream>
+// clang-format on
 
 int main() {
     if(!glfwInit()) {
@@ -8,8 +10,11 @@ int main() {
         return -1;
     }
 
-    std::cout << "Hello GLFW + OpenGL" << std::endl;
-    std::cout << "\nGLFW VERSION DETAIL:\n" << glfwGetVersionString() << std::endl;
+    std::cout << "Hello GLFW + GLAD OpenGL" << std::endl;
+
+    // always makes the window floating for i3wm
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
     GLFWwindow* window;
     window = glfwCreateWindow(800, 600, "Ballz", nullptr, nullptr);
 
@@ -20,6 +25,16 @@ int main() {
 
     // making window context current tells openGL that this window is to issue cammand to
     glfwMakeContextCurrent(window);
+
+    // loading GLAD for modern OpenGL functions
+    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD\n";
+        return -1;
+    }
+
+    // Print OpenGL version
+    std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
+    glViewport(0, 0, 800, 600);
 
     // main loop
     while(!glfwWindowShouldClose(window)) {

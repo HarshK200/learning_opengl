@@ -1,11 +1,29 @@
 [
   {
     "arguments": [
+      "/usr/bin/gcc",
+      "-DDEBUG",
+      "-Isrc",
+      "-Ivendor/GLFW/include",
+      "-Ivendor/GLAD/include",
+      "-m64",
+      "-g",
+      "-c",
+      "-o",
+      "../bin-int/Debug/linux/application/glad.o",
+      "vendor/GLAD/src/glad.c"
+    ],
+    "directory": "/home/harsh/Desktop/learning_opengl/application",
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLAD/src/glad.c",
+    "output": "/home/harsh/Desktop/learning_opengl/bin-int/Debug/linux/application/glad.o"
+  },
+  {
+    "arguments": [
       "/usr/bin/g++",
       "-DDEBUG",
       "-Isrc",
       "-Ivendor/GLFW/include",
-      "-I/usr/include/GL",
+      "-Ivendor/GLAD/include",
       "-m64",
       "-g",
       "-std=c++20",

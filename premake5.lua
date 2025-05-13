@@ -21,19 +21,19 @@ project "application"
 
     files {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/vendor/GLAD/src/glad.c"
     }
 
     includedirs {
         "%{prj.name}/src",
         "application/vendor/GLFW/include",
-        "/usr/include/GL"
+        "application/vendor/GLAD/include"
     }
 
     -- vendor links
     links {
         "GLFW",
-        "GL"
     }
 
     filter "system:linux"
