@@ -28,7 +28,7 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -Isrc -Ivendor/GLFW/include
+INCLUDES += -Isrc -Ivendor/GLFW/include -I/usr/include/GL
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
@@ -47,7 +47,7 @@ OBJDIR = ../bin-int/Debug/linux/application
 DEFINES += -DDEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++20
-LIBS += vendor/GLFW/bin/Debug/linux/GLFW/libGLFW.a
+LIBS += vendor/GLFW/bin/Debug/linux/GLFW/libGLFW.a -lGL
 LDDEPS += vendor/GLFW/bin/Debug/linux/GLFW/libGLFW.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
 
@@ -58,7 +58,7 @@ OBJDIR = ../bin-int/Release/linux/application
 DEFINES += -DRELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++20
-LIBS += vendor/GLFW/bin/Release/linux/GLFW/libGLFW.a
+LIBS += vendor/GLFW/bin/Release/linux/GLFW/libGLFW.a -lGL
 LDDEPS += vendor/GLFW/bin/Release/linux/GLFW/libGLFW.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
 

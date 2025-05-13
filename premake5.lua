@@ -26,12 +26,14 @@ project "application"
 
     includedirs {
         "%{prj.name}/src",
-        "application/vendor/GLFW/include"
+        "application/vendor/GLFW/include",
+        "/usr/include/GL"
     }
 
     -- vendor links
     links {
-        "GLFW"
+        "GLFW",
+        "GL"
     }
 
     filter "system:linux"

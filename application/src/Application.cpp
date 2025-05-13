@@ -1,5 +1,5 @@
+#include "GL/gl.h"
 #include "GLFW/glfw3.h"
-#include <GL/gl.h>
 #include <iostream>
 
 int main() {
@@ -9,6 +9,7 @@ int main() {
     }
 
     std::cout << "Hello GLFW + OpenGL" << std::endl;
+    std::cout << "\nGLFW VERSION DETAIL:\n" << glfwGetVersionString() << std::endl;
     GLFWwindow* window;
     window = glfwCreateWindow(1280, 720, "Ballz", nullptr, nullptr);
 
@@ -22,7 +23,14 @@ int main() {
 
     // main loop
     while(!glfwWindowShouldClose(window)) {
+        // both the glClear functions target the back buffer
+        glClearColor(0.8f, 0.9f, 1.0f, 1.0f);
 
+        // despite its name glClear actually fill the buffer with the GL_COLOR_BUFFER_BIT
+        // we just set
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // here be swap the front buffer with back buffer
         glfwSwapBuffers(window);
 
         glfwPollEvents();
