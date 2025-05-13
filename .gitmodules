@@ -1,0 +1,3 @@
+[submodule "application/vendor/GLFW"]
+	path = application/vendor/GLFW
+	url = https://github.com/harshk200/glfw
