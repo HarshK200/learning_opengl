@@ -25,10 +25,18 @@ int main() {
     while(!glfwWindowShouldClose(window)) {
         // both the glClear functions target the back buffer
         glClearColor(0.8f, 0.9f, 1.0f, 1.0f);
-
         // despite its name glClear actually fill the buffer with the GL_COLOR_BUFFER_BIT
         // we just set
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // NOTE: drawing a traingle using legacy openGL 1.1(comes from GL/gl.h header
+        // file) this is included in system by defualt
+
+        glBegin(GL_TRIANGLES);
+        glVertex2f(0.0f, 0.5f);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f(0.5f, -0.5f);
+        glEnd();
 
         // here be swap the front buffer with back buffer
         glfwSwapBuffers(window);
