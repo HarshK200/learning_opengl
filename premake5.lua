@@ -12,6 +12,7 @@ outputdir = "%{cfg.buildcfg}/%{cfg.system}"
 include "application/vendor/GLFW"
 
 project "application"
+    location "application"
     kind "ConsoleApp"
     language "C++"
 

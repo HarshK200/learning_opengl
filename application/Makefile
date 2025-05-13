@@ -28,7 +28,7 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -Iapplication/src -Iapplication/vendor/GLFW/include
+INCLUDES += -Isrc -Ivendor/GLFW/include
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
@@ -41,25 +41,25 @@ define POSTBUILDCMDS
 endef
 
 ifeq ($(config),debug)
-TARGETDIR = bin/Debug/linux/application
+TARGETDIR = ../bin/Debug/linux/application
 TARGET = $(TARGETDIR)/application
-OBJDIR = bin-int/Debug/linux/application
+OBJDIR = ../bin-int/Debug/linux/application
 DEFINES += -DDEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++20
-LIBS += application/vendor/GLFW/bin/Debug/linux/GLFW/libGLFW.a
-LDDEPS += application/vendor/GLFW/bin/Debug/linux/GLFW/libGLFW.a
+LIBS += vendor/GLFW/bin/Debug/linux/GLFW/libGLFW.a
+LDDEPS += vendor/GLFW/bin/Debug/linux/GLFW/libGLFW.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
 
 else ifeq ($(config),release)
-TARGETDIR = bin/Release/linux/application
+TARGETDIR = ../bin/Release/linux/application
 TARGET = $(TARGETDIR)/application
-OBJDIR = bin-int/Release/linux/application
+OBJDIR = ../bin-int/Release/linux/application
 DEFINES += -DRELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++20
-LIBS += application/vendor/GLFW/bin/Release/linux/GLFW/libGLFW.a
-LDDEPS += application/vendor/GLFW/bin/Release/linux/GLFW/libGLFW.a
+LIBS += vendor/GLFW/bin/Release/linux/GLFW/libGLFW.a
+LDDEPS += vendor/GLFW/bin/Release/linux/GLFW/libGLFW.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
 
 endif
@@ -139,7 +139,7 @@ endif
 # File Rules
 # #############################################
 
-$(OBJDIR)/main.o: application/src/main.cpp
+$(OBJDIR)/main.o: src/main.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

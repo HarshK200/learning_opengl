@@ -35,12 +35,12 @@ endif
 application: GLFW
 ifneq (,$(application_config))
 	@echo "==== Building application ($(application_config)) ===="
-	@${MAKE} --no-print-directory -C . -f application.make config=$(application_config)
+	@${MAKE} --no-print-directory -C application -f Makefile config=$(application_config)
 endif
 
 clean:
 	@${MAKE} --no-print-directory -C application/vendor/GLFW -f Makefile clean
-	@${MAKE} --no-print-directory -C . -f application.make clean
+	@${MAKE} --no-print-directory -C application -f Makefile clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
