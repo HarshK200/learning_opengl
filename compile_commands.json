@@ -7,21 +7,6 @@
       "-g",
       "-c",
       "-o",
-      "bin-int/Debug/linux/GLFW/input.o",
-      "src/input.c"
-    ],
-    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/input.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/input.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-D_GLFW_X11",
-      "-m64",
-      "-g",
-      "-c",
-      "-o",
       "bin-int/Debug/linux/GLFW/context.o",
       "src/context.c"
     ],
@@ -52,57 +37,27 @@
       "-g",
       "-c",
       "-o",
-      "bin-int/Debug/linux/GLFW/linux_joystick.o",
-      "src/linux_joystick.c"
-    ],
-    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/linux_joystick.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/linux_joystick.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-D_GLFW_X11",
-      "-m64",
-      "-g",
-      "-c",
-      "-o",
-      "bin-int/Debug/linux/GLFW/egl_context.o",
-      "src/egl_context.c"
-    ],
-    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/egl_context.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/egl_context.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-D_GLFW_X11",
-      "-m64",
-      "-g",
-      "-c",
-      "-o",
-      "bin-int/Debug/linux/GLFW/monitor.o",
-      "src/monitor.c"
-    ],
-    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/monitor.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/monitor.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-D_GLFW_X11",
-      "-m64",
-      "-g",
-      "-c",
-      "-o",
       "bin-int/Debug/linux/GLFW/null_joystick.o",
       "src/null_joystick.c"
     ],
     "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
     "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/null_joystick.c",
     "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/null_joystick.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-D_GLFW_X11",
+      "-m64",
+      "-g",
+      "-c",
+      "-o",
+      "bin-int/Debug/linux/GLFW/input.o",
+      "src/input.c"
+    ],
+    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/input.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/input.o"
   },
   {
     "arguments": [
@@ -127,12 +82,42 @@
       "-g",
       "-c",
       "-o",
-      "bin-int/Debug/linux/GLFW/null_window.o",
-      "src/null_window.c"
+      "bin-int/Debug/linux/GLFW/monitor.o",
+      "src/monitor.c"
     ],
     "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/null_window.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/null_window.o"
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/monitor.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/monitor.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-D_GLFW_X11",
+      "-m64",
+      "-g",
+      "-c",
+      "-o",
+      "bin-int/Debug/linux/GLFW/egl_context.o",
+      "src/egl_context.c"
+    ],
+    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/egl_context.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/egl_context.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-D_GLFW_X11",
+      "-m64",
+      "-g",
+      "-c",
+      "-o",
+      "bin-int/Debug/linux/GLFW/linux_joystick.o",
+      "src/linux_joystick.c"
+    ],
+    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/linux_joystick.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/linux_joystick.o"
   },
   {
     "arguments": [
@@ -157,12 +142,12 @@
       "-g",
       "-c",
       "-o",
-      "bin-int/Debug/linux/GLFW/osmesa_context.o",
-      "src/osmesa_context.c"
+      "bin-int/Debug/linux/GLFW/null_window.o",
+      "src/null_window.c"
     ],
     "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/osmesa_context.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/osmesa_context.o"
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/null_window.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/null_window.o"
   },
   {
     "arguments": [
@@ -178,6 +163,21 @@
     "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
     "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/null_monitor.c",
     "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/null_monitor.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-D_GLFW_X11",
+      "-m64",
+      "-g",
+      "-c",
+      "-o",
+      "bin-int/Debug/linux/GLFW/osmesa_context.o",
+      "src/osmesa_context.c"
+    ],
+    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/osmesa_context.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/osmesa_context.o"
   },
   {
     "arguments": [
@@ -232,12 +232,12 @@
       "-g",
       "-c",
       "-o",
-      "bin-int/Debug/linux/GLFW/posix_thread.o",
-      "src/posix_thread.c"
+      "bin-int/Debug/linux/GLFW/posix_time.o",
+      "src/posix_time.c"
     ],
     "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/posix_thread.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/posix_thread.o"
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/posix_time.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/posix_time.o"
   },
   {
     "arguments": [
@@ -247,12 +247,12 @@
       "-g",
       "-c",
       "-o",
-      "bin-int/Debug/linux/GLFW/posix_time.o",
-      "src/posix_time.c"
+      "bin-int/Debug/linux/GLFW/posix_thread.o",
+      "src/posix_thread.c"
     ],
     "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/posix_time.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/posix_time.o"
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/posix_thread.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/posix_thread.o"
   },
   {
     "arguments": [
@@ -277,21 +277,6 @@
       "-g",
       "-c",
       "-o",
-      "bin-int/Debug/linux/GLFW/window.o",
-      "src/window.c"
-    ],
-    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/window.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/window.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-D_GLFW_X11",
-      "-m64",
-      "-g",
-      "-c",
-      "-o",
       "bin-int/Debug/linux/GLFW/x11_init.o",
       "src/x11_init.c"
     ],
@@ -307,12 +292,12 @@
       "-g",
       "-c",
       "-o",
-      "bin-int/Debug/linux/GLFW/x11_window.o",
-      "src/x11_window.c"
+      "bin-int/Debug/linux/GLFW/window.o",
+      "src/window.c"
     ],
     "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
-    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/x11_window.c",
-    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/x11_window.o"
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/window.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/window.o"
   },
   {
     "arguments": [
@@ -328,6 +313,21 @@
     "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
     "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/x11_monitor.c",
     "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/x11_monitor.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-D_GLFW_X11",
+      "-m64",
+      "-g",
+      "-c",
+      "-o",
+      "bin-int/Debug/linux/GLFW/x11_window.o",
+      "src/x11_window.c"
+    ],
+    "directory": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW",
+    "file": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/src/x11_window.c",
+    "output": "/home/harsh/Desktop/learning_opengl/application/vendor/GLFW/bin-int/Debug/linux/GLFW/x11_window.o"
   },
   {
     "arguments": [
