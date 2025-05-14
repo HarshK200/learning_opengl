@@ -5,14 +5,14 @@
 #include <iostream>
 // clang-format on
 
-const char* vertexShaderCode = "#version 460 compatibility\n"
+const char* vertexShaderCode = "#version 460 core\n"
                                "layout (location = 0) in vec3 aPos;\n"
                                "void main()\n"
                                "{\n"
                                "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
                                "}\0";
 
-const char* fragmentShaderCode = "#version 460 compatibility\n"
+const char* fragmentShaderCode = "#version 460 core\n"
                                  "out vec4 FragColor;\n"
                                  "void main()\n"
                                  "{\n"
@@ -40,9 +40,9 @@ int main() {
 
     // always makes the window floating for i3wm
     // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     GLFWwindow* window;
     window = glfwCreateWindow(800, 600, "Ballz", nullptr, nullptr);
@@ -79,13 +79,15 @@ int main() {
     // clang-format on
 
     // vertex buffer object in GPU memory
-    unsigned int VertexBuffer;
-    glGenBuffers(1, &VertexBuffer);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
+    unsigned int vertexBuffer;
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
-    // telling how each vertex layout looks like
+    // Vertex Arrays Object that tells vertexShader about the vertex layout
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -131,6 +133,8 @@ int main() {
 
     // setting/activating the shader program
     glUseProgram(shaderProgram);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
     // main loop
     while(!glfwWindowShouldClose(window)) {
