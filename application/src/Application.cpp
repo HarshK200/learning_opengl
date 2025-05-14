@@ -89,8 +89,6 @@ int main() {
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    // unbinding the EBO (rebind when need)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     // vertex buffer object in GPU memory and VAO for its config
     unsigned int VAO, VBO;
@@ -109,6 +107,8 @@ int main() {
 
     // unbinding the VAO (rebind when needed)
     glBindVertexArray(0);
+    // unbinding the EBO (rebind when need)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     // compiling shaders
     unsigned int vertexShader;
@@ -155,13 +155,16 @@ int main() {
     // setting/activating the shader program
     glUseProgram(shaderProgram);
 
+    // for wireframe mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     // main loop
     while(!glfwWindowShouldClose(window)) {
         // handleing input events
         processInput(window);
 
         // both the glClear functions target the back buffer
-        glClearColor(0.8f, 0.9f, 1.0f, 1.0f);
+        glClearColor(0.3f, 0.5f, 0.5f, 1.0f);
         // despite its name glClear actually fill the buffer with the GL_COLOR_BUFFER_BIT
         // we just set
         glClear(GL_COLOR_BUFFER_BIT);
