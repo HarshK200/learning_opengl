@@ -2,21 +2,27 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include <GL/gl.h>
+#include <cmath>
 #include <iostream>
 // clang-format on
 
 const char* vertexShaderCode = "#version 460 core\n"
                                "layout (location = 0) in vec3 aPos;\n"
+                               "layout (location = 1) in vec3 aColor;\n"
+                               "out vec3 color;"
                                "void main()\n"
                                "{\n"
                                "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                               "    color = aColor;\n"
                                "}\0";
 
+// TODO: handle color
 const char* fragmentShaderCode = "#version 460 core\n"
+                                 "in vec3 color;\n"
                                  "out vec4 FragColor;\n"
                                  "void main()\n"
                                  "{\n"
-                                 "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                 "    FragColor = vec4(color, 1.0);\n"
                                  "}\0";
 
 // changes OpenGL viewport on resize
@@ -72,10 +78,11 @@ int main() {
 
     // clang-format off
     float VertexData[] = {
-         0.5f,  0.5f, 0.0f, // top-right
-        -0.5f,  0.5f, 0.0f, // top-left
-         0.5f, -0.5f, 0.0f, // bottom-right
-        -0.5f, -0.5f, 0.0f, // bottom-left
+        // positions        //colors
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,        // top-right
+        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f,        // top-left
+         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,        // bottom-right
+        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,        // bottom-left
     };
 
     unsigned int indices[] = {
@@ -102,8 +109,11 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     // Setting VAO config
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+                          (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     // unbinding the VAO (rebind when needed)
     glBindVertexArray(0);
@@ -154,9 +164,10 @@ int main() {
 
     // setting/activating the shader program
     glUseProgram(shaderProgram);
+    int VertexColorLocation = glGetUniformLocation(shaderProgram, "myColor");
 
     // for wireframe mode
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // main loop
     while(!glfwWindowShouldClose(window)) {
