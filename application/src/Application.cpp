@@ -72,17 +72,32 @@ int main() {
 
     // clang-format off
     float VertexData[] = {
-         0.0f,  0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
+         0.5f,  0.5f, 0.0f, // top-right
+        -0.5f,  0.5f, 0.0f, // top-left
+         0.5f, -0.5f, 0.0f, // bottom-right
+        -0.5f, -0.5f, 0.0f, // bottom-left
+    };
+
+    unsigned int indices[] = {
+        0, 2, 3, // triangle 1
+        0, 1, 3, // triangle 2
     };
     // clang-format on
+
+    // generate Element Buffer Object
+    unsigned int EBO;
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    // unbinding the EBO (rebind when need)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     // vertex buffer object in GPU memory and VAO for its config
     unsigned int VAO, VBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
+    // binding the VAO for future calls
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -91,6 +106,9 @@ int main() {
     // Setting VAO config
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    // unbinding the VAO (rebind when needed)
+    glBindVertexArray(0);
 
     // compiling shaders
     unsigned int vertexShader;
@@ -131,11 +149,11 @@ int main() {
         std::cout << "Error LINKING Shader Programm:" << infoLog << std::endl;
         return -1;
     }
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
     // setting/activating the shader program
     glUseProgram(shaderProgram);
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
 
     // main loop
     while(!glfwWindowShouldClose(window)) {
@@ -149,7 +167,9 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         /* RENDER HERE */
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // poll for any new event
         glfwPollEvents();
@@ -158,8 +178,10 @@ int main() {
         glfwSwapBuffers(window);
     }
 
-    // NOTE: doesn't  this glfwDestroyWindow() call is not really need since
-    // glfwTerminate() destorys all window either way but is good practice
+    // cleanup OpenGL and GLFW
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteProgram(shaderProgram);
     glfwDestroyWindow(window);
 
     glfwTerminate();
