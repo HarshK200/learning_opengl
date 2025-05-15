@@ -5,7 +5,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <iterator>
 #include <sstream>
 
 Shader::Shader(const char* vertexCodePath, const char* fragmentCodePath) {

@@ -1,10 +1,15 @@
 // clang-format off
-#include "Shader.h"
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include <GL/gl.h>
 #include <cmath>
 #include <iostream>
+
+// third-party
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+#include "Shader.h"
+
 // clang-format on
 
 // changes OpenGL viewport on resize
@@ -61,9 +66,15 @@ int main() {
     // clang-format off
     float VertexData[] = {
         // positions        //colors
-         0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,        // top-middle
+         0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,        // top-center
         -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,        // bottom-left
          0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,        // bottom-right
+    };
+    
+    float TextureCords[] = {
+        0.5f, 1.0f,          // top-center
+        0.0f, 0.0f,          // bottom-left
+        1.0f, 0.0f,          // bottom-right
     };
 
     unsigned int indices[] = {
@@ -111,6 +122,7 @@ int main() {
 
     // for wireframe mode
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    float xOffset = 0.0f;
 
     // main loop
     while(!glfwWindowShouldClose(window)) {
@@ -125,6 +137,7 @@ int main() {
 
         /* RENDER HERE */
         ourShader->Use();
+        ourShader->setUniformFloat("xOffset", xOffset);
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)0);
@@ -134,6 +147,8 @@ int main() {
 
         // here be swap the front buffer with back buffer
         glfwSwapBuffers(window);
+        if(xOffset < 0.5f)
+            xOffset += 0.01f;
     }
 
     // cleanup OpenGL and GLFW

@@ -9,6 +9,7 @@ public:
     unsigned int Program_ID;
 
     // reads shader code from disk, compiles it, makes a shader program and links it
+    // NOTE: either provide absolute path or relative path from the binray built
     Shader(const char* vertexCodePath, const char* fragmentCodePath);
     // clean up delete the program
     ~Shader();

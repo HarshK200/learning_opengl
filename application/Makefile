@@ -28,7 +28,7 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-INCLUDES += -Isrc -Ivendor/GLFW/include -Ivendor/GLAD/include
+INCLUDES += -Isrc -Ivendor/GLFW/include -Ivendor/GLAD/include -Ivendor/stb_image
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
