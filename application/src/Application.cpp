@@ -16,7 +16,6 @@ const char* vertexShaderCode = "#version 460 core\n"
                                "    color = aColor;\n"
                                "}\0";
 
-// TODO: handle color
 const char* fragmentShaderCode = "#version 460 core\n"
                                  "in vec3 color;\n"
                                  "out vec4 FragColor;\n"
@@ -79,15 +78,13 @@ int main() {
     // clang-format off
     float VertexData[] = {
         // positions        //colors
-         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,        // top-right
-        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f,        // top-left
+         0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,        // top-middle
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,        // bottom-left
          0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,        // bottom-right
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,        // bottom-left
     };
 
     unsigned int indices[] = {
-        0, 2, 3, // triangle 1
-        0, 1, 3, // triangle 2
+        0, 1, 2, // triangle 1
     };
     // clang-format on
 
@@ -183,7 +180,7 @@ int main() {
         /* RENDER HERE */
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)0);
 
         // poll for any new event
         glfwPollEvents();
