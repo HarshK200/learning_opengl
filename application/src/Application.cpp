@@ -108,8 +108,6 @@ int main() {
         "/home/harsh/Desktop/learning_opengl/application/assets/shader/vertexShader.glsl",
         "/home/harsh/Desktop/learning_opengl/application/assets/shader/fragmentShader.glsl");
     // clang-format on
-    // use shader program
-    ourShader->Use();
 
     // for wireframe mode
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -126,6 +124,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         /* RENDER HERE */
+        ourShader->Use();
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)0);
