@@ -75,8 +75,10 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/Application.o
+GENERATED += $(OBJDIR)/Shader.o
 GENERATED += $(OBJDIR)/glad.o
 OBJECTS += $(OBJDIR)/Application.o
+OBJECTS += $(OBJDIR)/Shader.o
 OBJECTS += $(OBJDIR)/glad.o
 
 # Rules
@@ -142,6 +144,9 @@ endif
 # #############################################
 
 $(OBJDIR)/Application.o: src/Application.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Shader.o: src/Shader.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/glad.o: vendor/GLAD/src/glad.c

@@ -1,28 +1,11 @@
 // clang-format off
+#include "Shader.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include <GL/gl.h>
 #include <cmath>
 #include <iostream>
 // clang-format on
-
-const char* vertexShaderCode = "#version 460 core\n"
-                               "layout (location = 0) in vec3 aPos;\n"
-                               "layout (location = 1) in vec3 aColor;\n"
-                               "out vec3 color;"
-                               "void main()\n"
-                               "{\n"
-                               "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                               "    color = aColor;\n"
-                               "}\0";
-
-const char* fragmentShaderCode = "#version 460 core\n"
-                                 "in vec3 color;\n"
-                                 "out vec4 FragColor;\n"
-                                 "void main()\n"
-                                 "{\n"
-                                 "    FragColor = vec4(color, 1.0);\n"
-                                 "}\0";
 
 // changes OpenGL viewport on resize
 void handleWindowResizeOpenGL(GLFWwindow* window, int width, int height) {
@@ -73,7 +56,7 @@ int main() {
 
     glfwSetFramebufferSizeCallback(window, handleWindowResizeOpenGL);
 
-    // NOTE: modern OpenGL traingle drawing data here
+    // NOTE: BUFFER VERTEX BUFFER STUFF START HERE
 
     // clang-format off
     float VertexData[] = {
@@ -117,51 +100,16 @@ int main() {
     // unbinding the EBO (rebind when need)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    // compiling shaders
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderCode, NULL);
-    glCompileShader(vertexShader);
+    // NOTE: BUFFER VERTEX BUFFER STUFF END HERE
 
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if(!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "Error compiling Vertex Shader:" << infoLog << std::endl;
-        return -1;
-    }
-
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderCode, NULL);
-    glCompileShader(fragmentShader);
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if(!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "Error compiling Fragment Shader:" << infoLog << std::endl;
-        return -1;
-    }
-
-    // linking shaders
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if(!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "Error LINKING Shader Programm:" << infoLog << std::endl;
-        return -1;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    // setting/activating the shader program
-    glUseProgram(shaderProgram);
-    int VertexColorLocation = glGetUniformLocation(shaderProgram, "myColor");
+    // creating shader program (with vertex and fragment shader)
+    // clang-format off
+    Shader* ourShader = new Shader(
+        "/home/harsh/Desktop/learning_opengl/application/assets/shader/vertexShader.glsl",
+        "/home/harsh/Desktop/learning_opengl/application/assets/shader/fragmentShader.glsl");
+    // clang-format on
+    // use shader program
+    ourShader->Use();
 
     // for wireframe mode
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -192,9 +140,10 @@ int main() {
     // cleanup OpenGL and GLFW
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
-    glfwDestroyWindow(window);
+    delete ourShader;
+    ourShader = nullptr;
 
+    glfwDestroyWindow(window);
     glfwTerminate();
 
     return 0;
