@@ -22,7 +22,8 @@ project "application"
     files {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
-        "%{prj.name}/vendor/GLAD/src/glad.c"
+        "%{prj.name}/vendor/GLAD/src/glad.c",
+        "%{prj.name}/vendor/stb_image/stb_image.cpp"
     }
 
     includedirs {

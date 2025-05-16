@@ -77,9 +77,11 @@ OBJECTS :=
 GENERATED += $(OBJDIR)/Application.o
 GENERATED += $(OBJDIR)/Shader.o
 GENERATED += $(OBJDIR)/glad.o
+GENERATED += $(OBJDIR)/stb_image.o
 OBJECTS += $(OBJDIR)/Application.o
 OBJECTS += $(OBJDIR)/Shader.o
 OBJECTS += $(OBJDIR)/glad.o
+OBJECTS += $(OBJDIR)/stb_image.o
 
 # Rules
 # #############################################
@@ -152,6 +154,9 @@ $(OBJDIR)/Shader.o: src/Shader.cpp
 $(OBJDIR)/glad.o: vendor/GLAD/src/glad.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/stb_image.o: vendor/stb_image/stb_image.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
 -include $(OBJECTS:%.o=%.d)
 ifneq (,$(PCH))
