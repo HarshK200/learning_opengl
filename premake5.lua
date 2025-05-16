@@ -28,9 +28,10 @@ project "application"
 
     includedirs {
         "%{prj.name}/src",
-        "application/vendor/GLFW/include",
-        "application/vendor/GLAD/include",
-        "application/vendor/stb_image"
+        "%{prj.name}/vendor/GLFW/include",
+        "%{prj.name}/vendor/GLAD/include",
+        "%{prj.name}/vendor/stb_image",
+        "%{prj.name}/vendor/GLM"
     }
 
     -- vendor links
