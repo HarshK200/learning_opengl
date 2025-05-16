@@ -180,13 +180,7 @@ int main() {
     ourShader->setUniformInt("texture1", 0);
     ourShader->setUniformInt("texture2", 1);
 
-    glm::mat4 transformationMtx(1.0f); // make the identity matrix
-    transformationMtx = glm::rotate(transformationMtx, glm::radians(45.0f), glm::vec3(0.0, 0.0, 1.0));
-    transformationMtx = glm::scale(transformationMtx, glm::vec3(1.0, 1.0, 0.0));
-    transformationMtx = glm::translate(transformationMtx, glm::vec3(0.5, 0.5, 0.5));
-
     unsigned int transformLoc = glGetUniformLocation(ourShader->Program_ID, "tranform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transformationMtx));
 
     // main loop
     while(!glfwWindowShouldClose(window)) {
@@ -204,6 +198,12 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
+
+        glm::mat4 transformationMtx(1.0f); // make the identity matrix
+        transformationMtx =
+            glm::rotate(transformationMtx, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
+        transformationMtx = glm::translate(transformationMtx, glm::vec3(0.5, -0.5, 1.0));
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transformationMtx));
 
         /* RENDER HERE */
         ourShader->Use();
