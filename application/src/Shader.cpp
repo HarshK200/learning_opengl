@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "Common.h"
 
 #include <GL/glext.h>
 #include <glad/glad.h> // for OpenGL functions
@@ -40,7 +41,8 @@ Shader::Shader(const char* vertexCodePath, const char* fragmentCodePath) {
         vertexIF.close();
         fragmentIF.close();
     } catch(std::ifstream::failure e) {
-        std::cout << "ERROR: Reading shader file" << std::endl;
+        std::cerr << "ERROR: Reading shader file" << std::endl;
+        ASSERT(false);
     }
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
@@ -60,6 +62,7 @@ Shader::Shader(const char* vertexCodePath, const char* fragmentCodePath) {
     if(!success) {
         glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
         std::cerr << "ERROR: Compiling Vertex Shader:\n" << infoLog << std::endl;
+        ASSERT(false)
     }
 
     // vertexShader
@@ -70,6 +73,7 @@ Shader::Shader(const char* vertexCodePath, const char* fragmentCodePath) {
     if(!success) {
         glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
         std::cerr << "ERROR: Compiling Fragment Shader:\n" << infoLog << std::endl;
+        ASSERT(false)
     }
 
     // create shader porgram
@@ -83,6 +87,7 @@ Shader::Shader(const char* vertexCodePath, const char* fragmentCodePath) {
     if(!success) {
         glGetProgramInfoLog(Program_ID, 512, NULL, infoLog);
         std::cerr << "ERROR: Linking Shader Program:\n" << infoLog << std::endl;
+        ASSERT(false)
     }
 
     // cleanup no longer required shaders

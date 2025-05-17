@@ -3,6 +3,7 @@
 #include <iostream>
 
 // third-party
+#include "IndexBuffer.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "stb_image.h"
@@ -11,16 +12,10 @@
 #include "glm/gtc/type_ptr.hpp"
 
 #include "Shader.h"
+#include "Common.h"
+#include "VertexBuffer.h"
 
 // clang-format on
-
-#define ASSERT(x, msg)                                                                   \
-    {                                                                                    \
-        if(!x) {                                                                         \
-            std::cerr << msg;                                                            \
-            __builtin_trap();                                                            \
-        }                                                                                \
-    }
 
 // changes OpenGL viewport on resize
 void handleWindowResizeOpenGL(GLFWwindow* window, int width, int height) {
@@ -78,51 +73,39 @@ int main() {
          0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  32.0f, 16.0f,       // top-right
         -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  0.0f, 48.0f,       // bottom-left
          0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,  32.0f, 48.0f,       // bottom-right
-
-         0.0f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f,  0.0f, 16.0f,       // top-left
-         1.0f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f,  32.0f, 16.0f,       // top-right
-         0.0f, -0.75f, 0.0f, 0.0f, 1.0f, 0.0f,  0.0f, 48.0f,       // bottom-left
-         1.0f, -0.75f, 0.0f, 0.0f, 0.0f, 1.0f,  32.0f, 48.0f,       // bottom-right
     };
     
     unsigned int indices[] = {
         0, 2, 3, 0, 1, 3, // quad 1
-        4, 6, 7, 4, 5, 7, // quad 2
     };
     // clang-format on
 
-    // generate Element Buffer Object
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // vertex buffer object in GPU memory and VAO for its config
-    unsigned int VAO, VBO;
+    // vertex array object in GPU memory and config VAO
+    unsigned int VAO;
     glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
 
     // binding the VAO for future calls
     glBindVertexArray(VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
+    VertexBuffer* VBO = new VertexBuffer(VertexData, sizeof(VertexData));
+    IndexBuffer* IBO = new IndexBuffer(indices, 6);
 
     // Setting VAO config
     // pos-vertex-attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(0); // goes to vertex shader layout 0 slot
     // color-vertex-attribute
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(1); // goes to vertex shader layout 1 slot
     // texture-coordinate-vertex-attribute
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(2); // goes to vertex shader layout 2 slot
 
     // unbinding the VAO (rebind when needed)
     glBindVertexArray(0);
+
     // unbinding the EBO (rebind when need)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -140,11 +123,12 @@ int main() {
     // NOTE: texture (pixel art)
     {
         int width, height, channels;
-        unsigned char* data = stbi_load(
-            "/home/harsh/Desktop/learning_opengl/application/assets/texture/Texture_Atlas.png",
-            &width, &height, &channels, 4);
+        unsigned char* data = stbi_load("/home/harsh/Desktop/learning_opengl/application/"
+                                        "assets/texture/Texture_Atlas.png",
+                                        &width, &height, &channels, 4);
         if(!data) {
-            ASSERT(data, "ERROR: couldn't load image");
+            std::cerr << "ERROR: couldn't load image" << std::endl;
+            ASSERT(data)
             return -1;
         }
 
@@ -186,8 +170,8 @@ int main() {
         /* RENDER HERE */
         ourShader->Use();
         glBindVertexArray(VAO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, (void*)0);
+        IBO->Bind();
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 
         // poll for any new event
         glfwPollEvents();
@@ -199,8 +183,10 @@ int main() {
     }
 
     // cleanup OpenGL and GLFW
+    delete VBO;
+    delete IBO;
+
     glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
     delete ourShader;
 
     glfwDestroyWindow(window);

@@ -75,11 +75,17 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/Application.o
+GENERATED += $(OBJDIR)/IndexBuffer.o
+GENERATED += $(OBJDIR)/Renderer.o
 GENERATED += $(OBJDIR)/Shader.o
+GENERATED += $(OBJDIR)/VertexBuffer.o
 GENERATED += $(OBJDIR)/glad.o
 GENERATED += $(OBJDIR)/stb_image.o
 OBJECTS += $(OBJDIR)/Application.o
+OBJECTS += $(OBJDIR)/IndexBuffer.o
+OBJECTS += $(OBJDIR)/Renderer.o
 OBJECTS += $(OBJDIR)/Shader.o
+OBJECTS += $(OBJDIR)/VertexBuffer.o
 OBJECTS += $(OBJDIR)/glad.o
 OBJECTS += $(OBJDIR)/stb_image.o
 
@@ -148,7 +154,16 @@ endif
 $(OBJDIR)/Application.o: src/Application.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/IndexBuffer.o: src/IndexBuffer.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Renderer.o: src/Renderer.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shader.o: src/Shader.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VertexBuffer.o: src/VertexBuffer.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/glad.o: vendor/GLAD/src/glad.c
