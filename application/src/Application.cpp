@@ -74,15 +74,20 @@ int main() {
     // clang-format off
     float VertexData[] = {
         // positions        //colors          // texture cords
-        -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  0.0f, 0.0f,       // top-left
-         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  16.0f, 0.0f,       // top-right
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  0.0f, 16.0f,       // bottom-left
-         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,  16.0f, 16.0f,       // bottom-right
+        -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  0.0f, 16.0f,       // top-left
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  32.0f, 16.0f,       // top-right
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  0.0f, 48.0f,       // bottom-left
+         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,  32.0f, 48.0f,       // bottom-right
+
+         0.0f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f,  0.0f, 16.0f,       // top-left
+         1.0f,  0.25f, 0.0f, 1.0f, 0.0f, 0.0f,  32.0f, 16.0f,       // top-right
+         0.0f, -0.75f, 0.0f, 0.0f, 1.0f, 0.0f,  0.0f, 48.0f,       // bottom-left
+         1.0f, -0.75f, 0.0f, 0.0f, 0.0f, 1.0f,  32.0f, 48.0f,       // bottom-right
     };
     
     unsigned int indices[] = {
-        0, 2, 3, // triangle 1
-        0, 1, 3, // triangle 2
+        0, 2, 3, 0, 1, 3, // quad 1
+        4, 6, 7, 4, 5, 7, // quad 2
     };
     // clang-format on
 
@@ -160,7 +165,7 @@ int main() {
         stbi_image_free(data);
     }
     glEnable(GL_FRAMEBUFFER_SRGB);
-    glDisable(0x809D);
+    glDisable(0x809D); // disable mulitsampling
 
     // using shader to set uniforms
     ourShader->Use();
@@ -182,7 +187,7 @@ int main() {
         ourShader->Use();
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, (void*)0);
 
         // poll for any new event
         glfwPollEvents();
