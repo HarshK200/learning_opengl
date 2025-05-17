@@ -14,6 +14,14 @@
 
 // clang-format on
 
+#define ASSERT(x, msg)                                                                   \
+    {                                                                                    \
+        if(!x) {                                                                         \
+            std::cerr << msg;                                                            \
+            __builtin_trap();                                                            \
+        }                                                                                \
+    }
+
 // changes OpenGL viewport on resize
 void handleWindowResizeOpenGL(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -66,10 +74,10 @@ int main() {
     // clang-format off
     float VertexData[] = {
         // positions        //colors          // texture cords
-        -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  0.0f, 1.0f,       // top-left
-         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  1.0f, 1.0f,       // top-right
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  0.0f, 0.0f,       // bottom-left
-         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,  1.0f, 0.0f,       // bottom-right
+        -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  0.0f, 0.0f,       // top-left
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,  16.0f, 0.0f,       // top-right
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,  0.0f, 16.0f,       // bottom-left
+         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,  16.0f, 16.0f,       // bottom-right
     };
     
     unsigned int indices[] = {
@@ -124,63 +132,38 @@ int main() {
     // for wireframe mode
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    // creating texture
-    unsigned int texture1;
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1);
-    // setting texture wrapping/filtering
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // NOTE: texture (pixel art)
+    {
+        int width, height, channels;
+        unsigned char* data = stbi_load(
+            "/home/harsh/Desktop/learning_opengl/application/assets/texture/Texture_Atlas.png",
+            &width, &height, &channels, 4);
+        if(!data) {
+            ASSERT(data, "ERROR: couldn't load image");
+            return -1;
+        }
 
-    // loading texture
-    int width, height, nrChannels;
-    unsigned char* textureData = stbi_load(
-        "/home/harsh/Desktop/learning_opengl/application/assets/texture/wall.jpg", &width,
-        &height, &nrChannels, 0);
-    if(!textureData) {
-        std::cerr << "ERROR: Failed To Load Texture File" << std::endl;
-        return -1;
+        unsigned int textureAtlas;
+        glGenTextures(1, &textureAtlas);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureAtlas);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        // NOTE: load into GPU memory
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8_ALPHA8, width, height, 0, GL_RGBA,
+                     GL_UNSIGNED_BYTE, data);
+        stbi_image_free(data);
     }
-    // loading texture in GPU
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE,
-                 textureData);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    // free texture data after loading it in GPU
-    stbi_image_free(textureData);
-
-    // creating texture
-    unsigned int texture2;
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2);
-    // setting texture wrapping/filtering
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // loading texture
-    textureData = stbi_load(
-        "/home/harsh/Desktop/learning_opengl/application/assets/texture/container.jpg",
-        &width, &height, &nrChannels, 0);
-    if(!textureData) {
-        std::cerr << "ERROR: Failed To Load Texture File" << std::endl;
-        return -1;
-    }
-    // loading texture in GPU
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE,
-                 textureData);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    // free texture data after loading it in GPU
-    stbi_image_free(textureData);
+    glEnable(GL_FRAMEBUFFER_SRGB);
+    glDisable(0x809D);
 
     // using shader to set uniforms
     ourShader->Use();
-    ourShader->setUniformInt("texture1", 0);
-    ourShader->setUniformInt("texture2", 1);
-
-    unsigned int transformLoc = glGetUniformLocation(ourShader->Program_ID, "tranform");
 
     // main loop
     while(!glfwWindowShouldClose(window)) {
@@ -194,16 +177,6 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // bind textures to corresponding texture units
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
-
-        glm::mat4 transformationMtx(1.0f); // make the identity matrix
-        transformationMtx =
-            glm::rotate(transformationMtx, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-        transformationMtx = glm::translate(transformationMtx, glm::vec3(0.5, -0.5, 1.0));
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transformationMtx));
 
         /* RENDER HERE */
         ourShader->Use();
