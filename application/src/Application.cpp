@@ -6,6 +6,7 @@
 #include "IndexBuffer.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "glm/ext/matrix_transform.hpp"
 #include "stb_image.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -81,15 +82,15 @@ int main() {
     // clang-format on
 
     // vertex array object in GPU memory and config VAO
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
+    unsigned int va;
+    glGenVertexArrays(1, &va);
 
     // binding the VAO for future calls
-    glBindVertexArray(VAO);
 
     VertexBuffer* VBO = new VertexBuffer(VertexData, sizeof(VertexData));
     IndexBuffer* IBO = new IndexBuffer(indices, 6);
 
+    glBindVertexArray(va);
     // Setting VAO config
     // pos-vertex-attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
@@ -154,23 +155,33 @@ int main() {
     // using shader to set uniforms
     ourShader->Use();
 
+    // rotation
+    // transformMatrix = glm::translate(transformMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
+
     // main loop
     while(!glfwWindowShouldClose(window)) {
         // handleing input events
         processInput(window);
 
-        // both the glClear functions target the back buffer
+        // clear screen with color
         glClearColor(0.3f, 0.5f, 0.5f, 1.0f);
-        // despite its name glClear actually fill the buffer with the GL_COLOR_BUFFER_BIT
-        // we just set
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // bind textures to corresponding texture units
 
         /* RENDER HERE */
+
+        // rotation baby!!
         ourShader->Use();
-        glBindVertexArray(VAO);
+        glBindVertexArray(va);
         IBO->Bind();
+
+        unsigned int uniformTransformID = glGetUniformLocation(ourShader->Program_ID, "transform");
+        glm::mat4 transformMatrix = glm::mat4(1.0f);
+        transformMatrix = glm::rotate(transformMatrix, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+        transformMatrix = glm::rotate(transformMatrix, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
+        glUniformMatrix4fv(uniformTransformID, 1, GL_FALSE, glm::value_ptr(transformMatrix));
+
+
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 
         // poll for any new event
@@ -186,7 +197,7 @@ int main() {
     delete VBO;
     delete IBO;
 
-    glDeleteVertexArrays(1, &VAO);
+    glDeleteVertexArrays(1, &va);
     delete ourShader;
 
     glfwDestroyWindow(window);
