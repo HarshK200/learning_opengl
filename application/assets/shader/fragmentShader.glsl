@@ -1,19 +1,13 @@
 #version 460 core
 
-layout(location = 0) in vec3 color;
-layout(location = 1) in vec2 textureCordsIn;
+in vec2 texCoords;
 
-layout(location = 0) out vec4 FragColor;
+out vec4 FragColor;
 
-layout(location = 0) uniform sampler2D textureAtlas;
+layout(location = 0) uniform sampler2D containerTexture;
+layout(location = 1) uniform sampler2D catTexture;
 
 void main()
 {
-    vec4 textureColor = texelFetch(textureAtlas, ivec2(textureCordsIn), 0);
-
-    if (textureColor.a == 0.0) {
-        discard;
-    }
-
-    FragColor = textureColor;
+    FragColor = mix(texture(containerTexture, texCoords), texture(catTexture, texCoords), 0.7);
 };
