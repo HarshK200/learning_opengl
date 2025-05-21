@@ -168,6 +168,14 @@ int main() {
     glEnable(GL_DEPTH_TEST);
     // clang-format on
 
+    // INFO: multiple cube positions
+    glm::vec3 cubePositions[] = {
+        glm::vec3(0.0f, 0.0f, 0.0f),    glm::vec3(2.0f, 5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f), glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3(2.4f, -0.4f, -3.5f),  glm::vec3(-1.7f, 3.0f, -7.5f),
+        glm::vec3(1.3f, -2.0f, -2.5f),  glm::vec3(1.5f, 2.0f, -2.5f),
+        glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f)};
+
     // INFO: Game Loop
     glViewport(0, 0, 800, 600);
     while(!glfwWindowShouldClose(window)) {
@@ -176,24 +184,29 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // INFO: 3D pespective stuff
-        glm::mat4 model = glm::mat4(1.0f);
-        glm::mat4 view = glm::mat4(1.0f);
-        glm::mat4 proj = glm::mat4(1.0f);
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 0.0f));
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+        for(unsigned int i = 0; i < 10; i++) {
 
-        glm::mat4 final = proj * view * model;
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model ,cubePositions[i]);
+            glm::mat4 view = glm::mat4(1.0f);
+            glm::mat4 proj = glm::mat4(1.0f);
+            model = glm::rotate(model, (20 + i + (float)glfwGetTime()) / 2, glm::vec3(1.0f, 1.0f, 0.0f));
+            view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+            proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-        unsigned int tranformMatrixLoc = glGetUniformLocation(gameShader->Program_ID, "tranformMatrix");
-        glUniformMatrix4fv(tranformMatrixLoc, 1, GL_FALSE, glm::value_ptr(final));
+            glm::mat4 final = proj * view * model;
 
-        // INFO: render cube
-        glBindVertexArray(va);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
-        // not using element array buffer at the moment
-        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+            unsigned int tranformMatrixLoc =
+                glGetUniformLocation(gameShader->Program_ID, "tranformMatrix");
+            glUniformMatrix4fv(tranformMatrixLoc, 1, GL_FALSE, glm::value_ptr(final));
+
+            // INFO: render cube
+            glBindVertexArray(va);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib);
+            // not using element array buffer at the moment
+            // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
